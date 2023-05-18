@@ -2,3 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+.ig-tooltip-container {
+    border-color: white !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-radius: 0.5rem; /* 8px */
+}
+
+.indicator {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    content: "";
+    border-radius: 100%;
+    margin-right: 8px;
+    border: 2px solid rgb(255, 255, 255);
+    box-shadow: rgba(88, 102, 126, 0.08) 0px 1px 1px, rgba(88, 102, 126, 0.1) 0px 8px 16px;
+    transform: translateY(2px);
+    background-color: #16c784;
+}
+
+.volume-legend {
+    display: inline;
+    width: 18px;
+    height: 17px;
+    margin-left: 0px;
+    margin-right: 4px
+}
+
+* {
+    font-family: 'Inter', sans-serif;
+}

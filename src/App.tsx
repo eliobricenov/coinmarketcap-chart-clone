@@ -15,10 +15,14 @@ import {
   MarkerType,
   IgrChartMouseEventArgs,
   IgrSeriesViewer,
+  GridMode,
 } from "igniteui-react-charts";
-import { IgRect, IChartTooltipProps } from "igniteui-react-core";
+import { IgRect, IChartTooltipProps, Visibility } from "igniteui-react-core";
 import { useRef } from "react";
 import { BITCOIN_DATA } from "./bitcoin-data.ts";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import VolumeLegend from "./components/VolumeLegend.tsx";
 
 IgrZoomSliderModule.register();
 IgrDataChartCoreModule.register();
@@ -27,6 +31,8 @@ IgrDataChartInteractivityModule.register();
 IgrDataChartAnnotationModule.register();
 IgrNumberAbbreviatorModule.register();
 IgrCrosshairLayerModule.register();
+
+dayjs.extend(utc);
 
 type BitcoinData = {
   open: number;
@@ -38,6 +44,8 @@ type BitcoinData = {
   timestamp: Date;
 };
 
+const MINIMAP_HEIGHT = "66px";
+
 function formatValue(value: number, options?: Intl.NumberFormatOptions) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -47,14 +55,31 @@ function formatValue(value: number, options?: Intl.NumberFormatOptions) {
 }
 
 function CustomTooltip({ data }: { data: BitcoinData }) {
+  const date = dayjs(data.timestamp);
   return (
-    <div className="flex flex-col p-4">
-      <span className="">{formatValue(data.open)}</span>
-      <span className="">
-        {formatValue(data.volume, {
-          notation: "compact",
-          maximumFractionDigits: 2,
-        })}
+    <div className="flex flex-col p-2 gap-2">
+      <div className="flex justify-between items-center mb-1">
+        <span className="font-medium text-black">
+          {date.format("MM/DD/YYYY")}
+        </span>
+        <span className="ml-5 text-gray-500 text-xs">
+          {date.format("h:mm:ss A")}
+        </span>
+      </div>
+      <span className="text-gray-500">
+        <span className="indicator" />
+        Price:{" "}
+        <span className="font-medium text-black">{formatValue(data.open)}</span>
+      </span>
+      <span className="text-gray-500">
+        <VolumeLegend />
+        Vol 24h:{" "}
+        <span className="font-medium text-black">
+          {formatValue(data.volume, {
+            notation: "compact",
+            maximumFractionDigits: 2,
+          })}
+        </span>
       </span>
     </div>
   );
@@ -136,16 +161,14 @@ function App() {
   };
 
   return (
-    <div style={{ width: "calc(100% - 10px)", height: "calc(100% - 10px)" }}>
+    <div className="w-[929px] h-[396px] mx-auto mt-[100px]">
       <IgrDataChart
         ref={mainChartRef}
         dataSource={BITCOIN_DATA}
         width="100%"
-        height="calc(100% - 160px)"
+        height={`calc(100% - ${MINIMAP_HEIGHT})`}
         defaultInteraction="DragPan"
         seriesMouseEnter={handleMouseEnter}
-        markerOutlines={["#19c785"]}
-        markerBrushes={["#19c785"]}
         outlines={["#19c785"]}
         brushes={
           [
@@ -167,16 +190,17 @@ function App() {
       >
         <IgrTimeXAxis
           name="xAxis"
-          label="Date"
           dateTimeMemberPath="timestamp"
           titleLocation="outsideBottom"
           labelLocation="outsideBottom"
-          strokeThickness={3}
+          stroke="#f0f2f5"
         />
         <IgrNumericYAxis
           name="yAxis"
           abbreviateLargeNumbers={true}
           labelLocation={AxisLabelsLocation.OutsideRight}
+          majorStroke="#f5f6f7"
+          stroke="#f0f2f5"
         />
         <IgrSplineAreaSeries
           name="priceSeries"
@@ -188,35 +212,24 @@ function App() {
           markerType={MarkerType.None}
         />
       </IgrDataChart>
-      <div style={{ width: "100%", height: "160px", position: "relative" }}>
-        <div
-          style={{
-            width: "100%",
-            height: "160px",
-            position: "absolute",
-            top: "0px",
-            left: "0px",
-          }}
-        >
+      <div className={`w-full h-[${MINIMAP_HEIGHT}] relative mt-4`}>
+        <div className={`w-full h-[${MINIMAP_HEIGHT}] absolute top-0 left-0`}>
           <IgrDataChart
             dataSource={BITCOIN_DATA}
             width="100%"
-            height="160px"
-            isHorizontalZoomEnabled="true"
-            isVerticalZoomEnabled="true"
+            height={MINIMAP_HEIGHT}
+            outlines={["#f0f2f5"]}
+            brushes={["#f0f2f5"]}
+            gridMode={GridMode.None}
           >
             <IgrTimeXAxis
               name="zoomXAxis"
-              label="Date"
               dateTimeMemberPath="timestamp"
-              titleLocation="outsideBottom"
-              labelLocation="outsideBottom"
-              strokeThickness={3}
+              labelVisibility={Visibility.Collapsed}
             />
             <IgrNumericYAxis
               name="zoomYAxis"
-              abbreviateLargeNumbers={true}
-              labelLocation={AxisLabelsLocation.OutsideRight}
+              labelVisibility={Visibility.Collapsed}
             />
             <IgrSplineAreaSeries
               name="priceSeries"
@@ -228,21 +241,13 @@ function App() {
             />
           </IgrDataChart>
         </div>
-        <div
-          style={{
-            width: "100%",
-            height: "160px",
-            position: "absolute",
-            top: "0px",
-            left: "0px",
-          }}
-        >
+        <div className={`w-full h-[${MINIMAP_HEIGHT}] absolute top-0 left-0`}>
           <IgrZoomSlider
             ref={zoomSliderRef}
             width="100%"
             height="100%"
             windowRectChanged={handleZoomSliderWindowChanged}
-            areThumbCalloutsEnabled="true"
+            barExtent={0}
           />
         </div>
       </div>
