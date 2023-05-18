@@ -241,7 +241,16 @@ function App() {
             />
           </IgrDataChart>
         </div>
-        <div className={`w-full h-[${MINIMAP_HEIGHT}] absolute top-0 left-0`}>
+        <div
+          // not using class because the canvas of the slider does not inherit the classnames
+          style={{
+            width: "100%",
+            height: MINIMAP_HEIGHT,
+            position: "absolute",
+            top: "0px",
+            left: "0px",
+          }}
+        >
           <IgrZoomSlider
             ref={zoomSliderRef}
             width="100%"
