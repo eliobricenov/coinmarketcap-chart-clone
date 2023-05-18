@@ -1,5 +1,6 @@
 import {
   AxisLabelsLocation,
+  IgrCrosshairLayer,
   IgrCrosshairLayerModule,
   IgrDataChart,
   IgrDataChartAnnotationModule,
@@ -201,6 +202,17 @@ function App() {
           labelLocation={AxisLabelsLocation.OutsideRight}
           majorStroke="#f5f6f7"
           stroke="#f0f2f5"
+        />
+        <IgrCrosshairLayer
+          name="CrosshairLayer"
+          thickness={1.1}
+          verticalLineStroke="#a6b0c3"
+          horizontalLineStroke="#a6b0c3"
+          yAxisAnnotationBackground="#7d879a"
+          xAxisAnnotationBackground="#7d879a"
+          yAxisAnnotationBackgroundCornerRadius={0}
+          xAxisAnnotationBackgroundCornerRadius={0}
+          isAxisAnnotationEnabled={true}
         />
         <IgrSplineAreaSeries
           name="priceSeries"
