@@ -22,7 +22,7 @@ import {
 } from "igniteui-react-charts";
 import { IChartTooltipProps, IgRect, Visibility } from "igniteui-react-core";
 import { useRef, useState } from "react";
-1import { BITCOIN_DATA } from "./mock-data/bitcoin-data.ts";
+import { BITCOIN_DATA } from "./mock-data/bitcoin-data.ts";
 import { Timeframe } from "./types.ts";
 import clsx from "clsx";
 import CustomTooltip from "./components/CustomTooltip.tsx";
