@@ -32,7 +32,7 @@ export default function CustomTooltip({ data }: { data: BitcoinData }) {
       </div>
       <span className="text-gray-500">
         <span
-          className={`inline-block w-[14px] h-[14px] rounded-full shadow-[${boxShadow}] translate-y-[2px] bg-[#16c784] border-2 border-white mr-2 content-none`}
+          className={`inline-block w-[14px] h-[14px] rounded-full shadow-[${boxShadow}] translate-y-[2px] bg-green-500 border-2 border-white mr-2 content-none`}
         />
         Price:{" "}
         <span className="font-medium text-black">

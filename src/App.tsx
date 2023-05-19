@@ -26,6 +26,7 @@ import { BITCOIN_DATA } from "./mock-data/bitcoin-data.ts";
 import { Timeframe } from "./types.ts";
 import clsx from "clsx";
 import CustomTooltip from "./components/CustomTooltip.tsx";
+import tailwindConfig from "../tailwind.config.ts";
 
 IgrZoomSliderModule.register();
 IgrDataChartCoreModule.register();
@@ -37,6 +38,7 @@ IgrCrosshairLayerModule.register();
 
 dayjs.extend(utc);
 const MINIMAP_HEIGHT = "66px";
+const themeColors = tailwindConfig.theme.extend.colors;
 
 function App() {
   const [timeframe, setTimeframe] = useState<Timeframe>("all");
@@ -169,10 +171,10 @@ function App() {
   return (
     <div className="w-[929px] h-[396px] mx-auto mt-[100px]">
       <div className="flex flex-row items-center">
-        <ul className="flex items center bg-[#EFF2F5] p-1 rounded m-0 text-xs text-[#616e85] gap-1 ml-auto mb-4">
+        <ul className="flex items center bg-gray-50 p-1 rounded m-0 text-xs text-gray-700 gap-1 ml-auto mb-4">
           <button
             className={clsx(
-              "px-[8px] py-[5px] hover:bg-[#f8fafdd9] hover:font-medium hover:rounded",
+              "px-[8px] py-[5px] hover:bg-gray-100 hover:font-medium hover:rounded",
               timeframe === "1d" && "bg-white font-medium rounded"
             )}
             onClick={() => calculateZoomSliderWindow("1d")}
@@ -181,7 +183,7 @@ function App() {
           </button>
           <button
             className={clsx(
-              "px-[8px] py-[5px] hover:bg-[#f8fafdd9] hover:font-medium hover:rounded",
+              "px-[8px] py-[5px] hover:bg-gray-100 hover:font-medium hover:rounded",
               timeframe === "1w" && "bg-white font-medium rounded"
             )}
             onClick={() => calculateZoomSliderWindow("1w")}
@@ -190,7 +192,7 @@ function App() {
           </button>
           <button
             className={clsx(
-              "px-[8px] py-[5px] hover:bg-[#f8fafdd9] hover:font-medium hover:rounded",
+              "px-[8px] py-[5px] hover:bg-gray-100 hover:font-medium hover:rounded",
               timeframe === "1m" && "bg-white font-medium rounded"
             )}
             onClick={() => calculateZoomSliderWindow("1m")}
@@ -199,7 +201,7 @@ function App() {
           </button>
           <button
             className={clsx(
-              "px-[8px] py-[5px] hover:bg-[#f8fafdd9] hover:font-medium hover:rounded",
+              "px-[8px] py-[5px] hover:bg-gray-100 hover:font-medium hover:rounded",
               timeframe === "1y" && "bg-white font-medium rounded"
             )}
             onClick={() => calculateZoomSliderWindow("1y")}
@@ -208,7 +210,7 @@ function App() {
           </button>
           <button
             className={clsx(
-              "px-[8px] py-[5px] hover:bg-[#f8fafdd9] hover:font-medium hover:rounded",
+              "px-[8px] py-[5px] hover:bg-gray-100 hover:font-medium hover:rounded",
               timeframe === "all" && "bg-white font-medium rounded"
             )}
             onClick={() => calculateZoomSliderWindow("all")}
@@ -224,18 +226,18 @@ function App() {
         height={`calc(100% - ${MINIMAP_HEIGHT})`}
         defaultInteraction="DragPan"
         seriesMouseEnter={handleMouseEnter}
-        outlines={["#19c785"]}
+        outlines={[themeColors.green["500"]]}
         brushes={
           [
             {
               type: "linearGradient",
               colorStops: [
                 {
-                  color: "#c2ecd8",
+                  color: themeColors.green["50"],
                   offset: 0,
                 },
                 {
-                  color: "#ffffff",
+                  color: "white",
                   offset: 0.95,
                 },
               ],
@@ -248,22 +250,22 @@ function App() {
           dateTimeMemberPath="date"
           titleLocation="outsideBottom"
           labelLocation="outsideBottom"
-          stroke="#f0f2f5"
+          stroke={themeColors.gray["20"]}
         />
         <IgrNumericYAxis
           name="yAxis"
           abbreviateLargeNumbers={true}
           labelLocation={AxisLabelsLocation.OutsideRight}
-          majorStroke="#f5f6f7"
-          stroke="#f0f2f5"
+          majorStroke={themeColors.gray["10"]}
+          stroke={themeColors.gray["20"]}
         />
         <IgrCrosshairLayer
           name="CrosshairLayer"
           thickness={1.1}
-          verticalLineStroke="#a6b0c3"
-          horizontalLineStroke="#a6b0c3"
-          yAxisAnnotationBackground="#7d879a"
-          xAxisAnnotationBackground="#7d879a"
+          verticalLineStroke={themeColors.gray["200"]}
+          horizontalLineStroke={themeColors.gray["200"]}
+          yAxisAnnotationBackground={themeColors.gray["600"]}
+          xAxisAnnotationBackground={themeColors.gray["600"]}
           yAxisAnnotationBackgroundCornerRadius={0}
           xAxisAnnotationBackgroundCornerRadius={0}
           isAxisAnnotationEnabled={true}
@@ -284,8 +286,8 @@ function App() {
             dataSource={BITCOIN_DATA["all"]}
             width="100%"
             height={MINIMAP_HEIGHT}
-            outlines={["#f0f2f5"]}
-            brushes={["#f0f2f5"]}
+            outlines={themeColors.gray["20"]}
+            brushes={themeColors.gray["20"]}
             gridMode={GridMode.None}
           >
             <IgrTimeXAxis name="zoomXAxis" dateTimeMemberPath="date" />
