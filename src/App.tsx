@@ -27,6 +27,7 @@ import { Timeframe } from "./types.ts";
 import clsx from "clsx";
 import CustomTooltip from "./components/CustomTooltip.tsx";
 import tailwindConfig from "../tailwind.config.ts";
+import { formatYAxisValue } from "./utils.ts";
 
 IgrZoomSliderModule.register();
 IgrDataChartCoreModule.register();
@@ -100,6 +101,7 @@ function App() {
     updateMainChartZoom(zoom);
   };
 
+  // we want to update the main chart zoom when the user changes the zoom slider window
   const handleZoomSliderWindowChanged = () => {
     const mainChart = mainChartRef.current;
     const zoomSlider = zoomSliderRef.current;
@@ -169,7 +171,7 @@ function App() {
   };
 
   return (
-    <div className="w-[929px] h-[396px] mx-auto mt-[100px]">
+    <div className="w-[929px] h-[396px] mx-auto mt-[100px] px-10">
       <div className="flex flex-row items-center">
         <ul className="flex items center bg-gray-50 p-1 rounded m-0 text-xs text-gray-700 gap-1 ml-auto mb-4">
           <button
@@ -251,6 +253,7 @@ function App() {
           titleLocation="outsideBottom"
           labelLocation="outsideBottom"
           stroke={themeColors.gray["20"]}
+          labelTextColor={themeColors.gray["700"]}
         />
         <IgrNumericYAxis
           name="yAxis"
@@ -258,6 +261,11 @@ function App() {
           labelLocation={AxisLabelsLocation.OutsideRight}
           majorStroke={themeColors.gray["10"]}
           stroke={themeColors.gray["20"]}
+          labelTextColor={themeColors.gray["700"]}
+          formatLabel={(value) => formatYAxisValue(value)}
+          title="USD"
+          titleTextColor={themeColors.gray["700"]}
+          titleLeftMargin={5}
         />
         <IgrCrosshairLayer
           name="CrosshairLayer"
@@ -290,7 +298,11 @@ function App() {
             brushes={themeColors.gray["20"]}
             gridMode={GridMode.None}
           >
-            <IgrTimeXAxis name="zoomXAxis" dateTimeMemberPath="date" />
+            <IgrTimeXAxis
+              name="zoomXAxis"
+              dateTimeMemberPath="date"
+              labelTextColor={themeColors.gray["700"]}
+            />
             <IgrNumericYAxis
               name="zoomYAxis"
               labelVisibility={Visibility.Collapsed}

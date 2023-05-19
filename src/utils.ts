@@ -5,3 +5,9 @@ export function formatValue(value: number, options?: Intl.NumberFormatOptions) {
     ...options,
   }).format(value);
 }
+
+export function formatYAxisValue(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+  }).format(value);
+}
